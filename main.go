@@ -6,24 +6,44 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/gorilla/mux"
-	"github.com/urfave/negroni"
 	"encoding/json"
+
+	"github.com/gorilla/mux"
 	_ "github.com/jackc/pgx/v4/stdlib"
+	"github.com/urfave/negroni"
 )
+
 var db *sql.DB
+
 func HandleGetInventory(w http.ResponseWriter, r *http.Request) {
 	datastore := Datastore{db}
 	inventory, err := datastore.GetInventory(1)
 	fmt.Println(inventory)
-	response,err:=json.Marshal(inventory)
-	if err!=nil{
+	response, err := json.Marshal(inventory)
+	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
 		return
 	}
-	w.Header().Set("Content-Type","application/json")
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(response))
+}
+
+func HandleCreateInventory(w http.ResponseWriter, r *http.Request) {
+	datastore := Datastore{db}
+	var req Inventory
+	json.NewDecoder(r.Body).Decode(&req)
+	inventory, err := datastore.CreateInventory(req)
+	fmt.Println(inventory)
+	response, err := json.Marshal(inventory)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
 	w.Write([]byte(response))
 }
 
@@ -49,13 +69,13 @@ func main() {
 	}
 
 	fmt.Println(greeting)
-	
 
 	router := mux.NewRouter()
 
 	router.HandleFunc("/api/inventory/{id}", HandleGetInventory).Methods("GET")
-	
+	router.HandleFunc("/api/inventory/", HandleCreateInventory).Methods("POST")
 	n := negroni.Classic()
 	n.UseHandler(router)
 	n.Run(":8080")
+
 }
