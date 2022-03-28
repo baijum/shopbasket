@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-
+	"strconv"
 	"encoding/json"
 
 	"github.com/gorilla/mux"
@@ -17,7 +17,9 @@ var db *sql.DB
 
 func HandleGetInventory(w http.ResponseWriter, r *http.Request) {
 	datastore := Datastore{db}
-	inventory, err := datastore.GetInventory(1)
+	vars := mux.Vars(r)
+	id,_:= strconv.Atoi(vars["id"])
+	inventory, err := datastore.GetInventory(id)
 	fmt.Println(inventory)
 	response, err := json.Marshal(inventory)
 	if err != nil {
@@ -62,6 +64,22 @@ func HandleListInventory(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(response))
 }
 
+func HandleDeleteInventory(w http.ResponseWriter, r *http.Request) {
+	datastore := Datastore{db}
+	vars := mux.Vars(r)
+	id,_:= strconv.Atoi(vars["id"])
+	err := datastore.DeleteInventory(id)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("{}"))
+}
+
+
 func main() {
 	//database : hippo
 	//host:hippo-primary.testing.svc
@@ -90,6 +108,7 @@ func main() {
 	router.HandleFunc("/api/inventory/{id}", HandleGetInventory).Methods("GET")
 	router.HandleFunc("/api/inventory", HandleCreateInventory).Methods("POST")
 	router.HandleFunc("/api/inventory", HandleListInventory).Methods("GET")
+	router.HandleFunc("/api/inventory/{id}", HandleDeleteInventory).Methods("DELETE")
 	n := negroni.Classic()
 	n.UseHandler(router)
 	n.Run(":8080")

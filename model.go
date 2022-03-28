@@ -39,7 +39,8 @@ func (ds *Datastore) ListInventory() ([]Inventory, error) {
 }
 
 func (ds *Datastore) DeleteInventory(id int) error {
-	panic("implement")
+	_,err := ds.db.Query(`Delete from inventory where id=$1`,id)
+	return err
 }
 
 func (ds *Datastore) CreateInventory(inventory Inventory) (Inventory, error) {
