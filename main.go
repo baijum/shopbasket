@@ -7,7 +7,7 @@ import (
 	"os"
 	"strconv"
 	"encoding/json"
-
+	"github.com/baijum/servicebinding/binding"
 	"github.com/gorilla/mux"
 	_ "github.com/jackc/pgx/v4/stdlib"
 	"github.com/urfave/negroni"
@@ -88,7 +88,24 @@ func main() {
 	//user: hippo
 	// TODO: replace with the connection string
 	var err error
-	db, err = sql.Open("pgx", "postgres://hippo:%2A%2BfVs0i%3Cf%40i%5B%40%3CJM%2AKSuYn1B@localhost:5432/hippo")
+	sb, err := binding.NewServiceBinding()
+	if err != nil {
+		_, _ = fmt.Fprintln(os.Stderr, "Could not read service bindings")
+		os.Exit(1)
+	}
+	bindings, err := sb.Bindings("postgresql")
+	connectionString := fmt.Sprintf("postgres://%v:%v@%v:%v/%v",
+		bindings[0]["username"],
+		bindings[0]["password"],
+		bindings[0]["host"],
+		bindings[0]["port"],
+		bindings[0]["database"])
+	fmt.Println(connectionString)
+	if err != nil {
+		_, _ = fmt.Fprintln(os.Stderr, "Unable to find postgres binding")
+		os.Exit(1)
+	}
+	db, err = sql.Open("pgx", connectionString)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
