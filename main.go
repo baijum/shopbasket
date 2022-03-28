@@ -47,6 +47,21 @@ func HandleCreateInventory(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(response))
 }
 
+func HandleListInventory(w http.ResponseWriter, r *http.Request) {
+	datastore := Datastore{db}
+	inventory, err := datastore.ListInventory()
+	fmt.Println(inventory)
+	response, err := json.Marshal(inventory)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(response))
+}
+
 func main() {
 	//database : hippo
 	//host:hippo-primary.testing.svc
@@ -73,7 +88,8 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/api/inventory/{id}", HandleGetInventory).Methods("GET")
-	router.HandleFunc("/api/inventory/", HandleCreateInventory).Methods("POST")
+	router.HandleFunc("/api/inventory", HandleCreateInventory).Methods("POST")
+	router.HandleFunc("/api/inventory", HandleListInventory).Methods("GET")
 	n := negroni.Classic()
 	n.UseHandler(router)
 	n.Run(":8080")

@@ -25,7 +25,17 @@ func (ds *Datastore) GetInventory(id int) (Inventory, error) {
 }
 
 func (ds *Datastore) ListInventory() ([]Inventory, error) {
-	panic("implement")
+	var inventoryList []Inventory
+	rows, err := ds.db.Query(`SELECT id, name, description,price,status FROM "inventory"`)
+	for rows.Next() {
+		inventory := Inventory{}
+		err = rows.Scan(&inventory.Id, &inventory.Name, &inventory.Description, &inventory.Price, &inventory.Status)
+		if err != nil {
+			return nil, err
+		}
+		inventoryList = append(inventoryList, inventory)
+	}
+	return inventoryList, err
 }
 
 func (ds *Datastore) DeleteInventory(id int) error {
