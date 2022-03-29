@@ -1,4 +1,4 @@
-
+<form>
 <div class="form-group">
   <label for="name">Name</label>
   <input type="text" class="form-control" id="name"
@@ -17,5 +17,6 @@
            required
            [(ngModel)]="model.price" name="price">
 </div>
-<button type="button" class="btn btn-default">Add Inventory</button>
+<button type="button" class="btn btn-default" (click)="newInventory()">Add Inventory</button>
 <p>inventory-form works!</p>
+</form>
