@@ -2,7 +2,8 @@
 <h2>Inventory List</h2>
 <ul class="inventory">
     <li *ngFor="let inv of inventory">
-    <span class="badge">{{inv.id}}</span> {{inv.name}}:{{inv.description}}
+    <span class="badge">{{inv.id}}</span> {{inv.name}}:{{inv.description}}:{{inv.status}}:{{inv.price}}
     </li>
-  <p>inventory list here</p>
 </ul>
+
+<app-inventory-form></app-inventory-form>
