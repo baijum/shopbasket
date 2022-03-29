@@ -75,7 +75,8 @@
               "browserTarget": "shopbasket:build:production"
             },
             "development": {
-              "browserTarget": "shopbasket:build:development"
+              "browserTarget": "shopbasket:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

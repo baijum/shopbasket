@@ -10,11 +10,11 @@ type Datastore struct {
 }
 
 type Inventory struct {
-	Id          int
-	Name        string
-	Description string
-	Price       int
-	Status      bool
+	Id          int `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Price       int `json:"price"`
+	Status      bool `json:"status"`
 }
 
 func (ds *Datastore) GetInventory(id int) (Inventory, error) {

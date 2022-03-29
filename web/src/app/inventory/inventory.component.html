@@ -1,0 +1,8 @@
+<p>inventory works!</p>
+<h2>Inventory List</h2>
+<ul class="inventory">
+    <li *ngFor="let inv of inventory">
+    <span class="badge">{{inv.id}}</span> {{inv.name}}:{{inv.description}}
+    </li>
+  <p>inventory list here</p>
+</ul>
