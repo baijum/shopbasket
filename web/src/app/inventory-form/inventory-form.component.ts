@@ -14,4 +14,7 @@ export class InventoryFormComponent implements OnInit {
   newInventory(){
     this.inventoryService.createInventory(this.model.name,this.model.description, this.model.price)
   }
+  onSubmit(){
+
+  }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Inventory } from './inventory';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 
@@ -8,6 +8,7 @@ import { catchError, map, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class InventoryService {
+  private inv:Observable<Inventory>= new Observable<Inventory>();
   private inventoryUrl = 'api/inventory'; 
   constructor(private http: HttpClient) { }
   httpOptions = {
@@ -19,7 +20,18 @@ export class InventoryService {
 
   createInventory(name: String, description: String, price: Number): Observable<Inventory> {
     var inventory= {name:name, description:description, price:price, status:true}
-    return this.http.post<Inventory>(this.inventoryUrl, inventory, this.httpOptions);
+    console.log(inventory);
+    // return this.http.post<Inventory>(this.inventoryUrl, inventory, this.httpOptions).pipe(
+    //   catchError(this.handleError<Inventory>('createInventory'))
+    // );
+    this.http.post<Inventory>(this.inventoryUrl, inventory, this.httpOptions).subscribe({
+      next: data => {
+        console.log("Success")
+      },
+      error: error => {
+            console.error('There was an error!', error);
+        }
+    });
+    return this.inv
   }
-
 }
