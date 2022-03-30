@@ -11,6 +11,7 @@ import (
 	"github.com/gorilla/mux"
 	_ "github.com/jackc/pgx/v4/stdlib"
 	"github.com/urfave/negroni"
+	"time"
 )
 
 var db *sql.DB
@@ -86,6 +87,7 @@ func main() {
 	//port:5432
 	//user: hippo
 	// TODO: replace with the connection string
+	time.Sleep(1 * time.Minute)
 	var err error
 	fmt.Fprintln(os.Stderr, "Starting of main")
 	sb, err := binding.NewServiceBinding()
