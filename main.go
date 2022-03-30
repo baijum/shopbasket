@@ -35,6 +35,7 @@ func HandleGetInventory(w http.ResponseWriter, r *http.Request) {
 func HandleCreateInventory(w http.ResponseWriter, r *http.Request) {
 	datastore := Datastore{db}
 	var req Inventory
+	fmt.Println(r.Body)
 	json.NewDecoder(r.Body).Decode(&req)
 	inventory, err := datastore.CreateInventory(req)
 	fmt.Println(inventory)
