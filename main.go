@@ -93,12 +93,7 @@ func main() {
 		os.Exit(1)
 	}
 	bindings, err := sb.Bindings("postgresql")
-	connectionString := fmt.Sprintf("postgres://%v:%v@%v:%v/%v",
-		bindings[0]["username"],
-		bindings[0]["password"],
-		bindings[0]["host"],
-		bindings[0]["port"],
-		bindings[0]["database"])
+	connectionString := bindings[0]["pgbouncer-uri"]
 	fmt.Println(connectionString)
 	if err != nil {
 		_, _ = fmt.Fprintln(os.Stderr, "Unable to find postgres binding")
