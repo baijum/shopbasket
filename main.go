@@ -93,12 +93,14 @@ func main() {
 		_, _ = fmt.Fprintln(os.Stderr, "Could not read service bindings")
 	}
 	bindings, err := sb.Bindings("postgresql")
-	connectionString := bindings[0]["pgbouncer-uri"]
-	fmt.Println(connectionString)
-	fmt.Fprintln(os.Stderr,connectionString)
+	fmt.Fprintln(os.Stderr,bindings)
 	if err != nil {
 		_, _ = fmt.Fprintln(os.Stderr, "Unable to find postgres binding")
 	}
+	connectionString := bindings[0]["pgbouncer-uri"]
+	fmt.Println(connectionString)
+	fmt.Fprintln(os.Stderr,connectionString)
+	
 	db, err = sql.Open("pgx", connectionString)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
