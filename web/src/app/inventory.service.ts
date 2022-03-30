@@ -18,13 +18,9 @@ export class InventoryService {
     return this.http.get<Inventory[]>(this.inventoryUrl);
   }
 
-  createInventory(name: String, description: String, price: Number): Observable<Inventory> {
+  createInventory(name: String, description: String, price: String): Observable<Inventory> {
     var inventory= {name:name, description:description, price:price, status:true}
-    console.log(inventory);
-    // return this.http.post<Inventory>(this.inventoryUrl, inventory, this.httpOptions).pipe(
-    //   catchError(this.handleError<Inventory>('createInventory'))
-    // );
-    this.http.post<Inventory>(this.inventoryUrl, inventory, this.httpOptions).subscribe({
+    this.http.post<Inventory>(this.inventoryUrl,inventory, this.httpOptions).subscribe({
       next: data => {
         console.log("Success")
       },
@@ -34,4 +30,5 @@ export class InventoryService {
     });
     return this.inv
   }
+
 }

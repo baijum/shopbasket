@@ -1,1 +1,1 @@
-INSERT INTO inventory(name,description,price,status) VALUES('CARS','Automobile',80000,true);
+INSERT INTO inventory(name,description,price,status) VALUES('CARS','Automobile','80000',true);

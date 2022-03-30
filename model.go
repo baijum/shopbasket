@@ -14,7 +14,7 @@ type Inventory struct {
 	Id          int `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
-	Price       int `json:"price"`
+	Price       string `json:"price"`
 	Status      bool `json:"status"`
 }
 
@@ -45,7 +45,6 @@ func (ds *Datastore) DeleteInventory(id int) error {
 }
 
 func (ds *Datastore) CreateInventory(inventory Inventory) (Inventory, error) {
-	fmt.Println(inventory)
 	err := ds.db.QueryRow(`INSERT INTO "inventory" (name, description, price, status) VALUES ($1, $2, $3, $4) RETURNING id`,
 		inventory.Name, inventory.Description, inventory.Price, inventory.Status).Scan(&inventory.Id)
 	return inventory, err

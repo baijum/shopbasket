@@ -7,7 +7,7 @@ import { InventoryService } from '../inventory.service';
   styleUrls: ['./inventory-form.component.scss']
 })
 export class InventoryFormComponent implements OnInit {
-  model= new AddInventory(0,"","",false,0)
+  model= new AddInventory(0,"","",false,"")
   constructor(private inventoryService: InventoryService) { }
   ngOnInit(): void {
   }

@@ -3,7 +3,7 @@ export interface Inventory {
     name: string;
     description: string;
     status:boolean;
-    price:number;
+    price: string;
   }
 
   export class AddInventory {
@@ -13,7 +13,7 @@ export interface Inventory {
       public name: string,
       public description: string,
       public status: boolean,
-      public price:number
+      public price: string
     ) {  }
   
   }
