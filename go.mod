@@ -3,9 +3,9 @@ module github.com/ShopBasket/shopbasket
 go 1.17
 
 require (
-	github.com/baijum/servicebinding v0.1.0
 	github.com/gorilla/mux v1.8.0
 	github.com/jackc/pgx/v4 v4.15.0
+	github.com/nebhale/client-go v1.0.0
 	github.com/urfave/negroni v1.0.0
 )
 

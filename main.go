@@ -7,11 +7,11 @@ import (
 	"os"
 	"strconv"
 	"encoding/json"
-	"github.com/baijum/servicebinding/binding"
+	"github.com/nebhale/client-go/bindings"
 	"github.com/gorilla/mux"
 	_ "github.com/jackc/pgx/v4/stdlib"
 	"github.com/urfave/negroni"
-	"time"
+	//"time"
 	"io/ioutil"
 )
 
@@ -99,21 +99,33 @@ func main() {
 	//port:5432
 	//user: hippo
 	// TODO: replace with the connection string
-	time.Sleep(1 * time.Minute)
+	//time.Sleep(1 * time.Minute)
 	var err error
-	fmt.Fprintln(os.Stderr, "Starting of main")
-	sb, err := binding.NewServiceBinding()
-	if err != nil {
-		_, _ = fmt.Fprintln(os.Stderr, "Could not read service bindings")
+	// fmt.Fprintln(os.Stderr, "Starting of main")
+	// sb, err := binding.NewServiceBinding()
+	// if err != nil {
+	// 	_, _ = fmt.Fprintln(os.Stderr, "Could not read service bindings")
+	// }
+	b := bindings.FromServiceBindingRoot()
+	b = bindings.Filter(b, "postgresql")
+	if len(b) != 1 {
+		_, _ = fmt.Fprintf(os.Stderr, "Incorrect number of PostgreSQL drivers: %d\n", len(b))
+		os.Exit(1)
 	}
-	res,_:=IOReadDir("/bindings")
-	fmt.Println(res)
-	bindings, err := sb.Bindings("postgresql")
-	fmt.Fprintln(os.Stderr,bindings)
-	if err != nil {
-		_, _ = fmt.Fprintln(os.Stderr, "Unable to find postgres binding")
+	// res,_:=IOReadDir("/bindings")
+	// fmt.Fprintln(res)
+	connectionString, ok := bindings.Get(b[0], "pgbouncer-uri")
+	if !ok {
+		_, _ = fmt.Fprintln(os.Stderr, "No pgbouncer-uri in binding")
+		os.Exit(1)
 	}
-	connectionString := bindings[0]["pgbouncer-uri"]
+	// fmt.Println(res)
+	// bindings, err := sb.Bindings("postgresql")
+	// fmt.Fprintln(os.Stderr,bindings)
+	// if err != nil {
+	// 	_, _ = fmt.Fprintln(os.Stderr, "Unable to find postgres binding")
+	// }
+	// connectionString := bindings[0]["pgbouncer-uri"]
 	fmt.Println(connectionString)
 	fmt.Fprintln(os.Stderr,connectionString)
 	
