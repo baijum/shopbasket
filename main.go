@@ -11,7 +11,8 @@ import (
 	"github.com/gorilla/mux"
 	_ "github.com/jackc/pgx/v4/stdlib"
 	"github.com/urfave/negroni"
-	"time"
+	//"time"
+	"io/ioutil"
 )
 
 var db *sql.DB
@@ -79,7 +80,18 @@ func HandleDeleteInventory(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("{}"))
 }
 
+func IOReadDir(root string) ([]string, error) {
+    var files []string
+    fileInfo, err := ioutil.ReadDir(root)
+    if err != nil {
+        return files, err
+    }
 
+    for _, file := range fileInfo {
+        files = append(files, file.Name())
+    }
+    return files, nil
+}
 func main() {
 	//database : hippo
 	//host:hippo-primary.testing.svc
@@ -87,13 +99,15 @@ func main() {
 	//port:5432
 	//user: hippo
 	// TODO: replace with the connection string
-	time.Sleep(1 * time.Minute)
+	//time.Sleep(1 * time.Minute)
 	var err error
 	fmt.Fprintln(os.Stderr, "Starting of main")
 	sb, err := binding.NewServiceBinding()
 	if err != nil {
 		_, _ = fmt.Fprintln(os.Stderr, "Could not read service bindings")
 	}
+	res,_:=IOReadDir("/bindings")
+	fmt.Println(res)
 	bindings, err := sb.Bindings("postgresql")
 	fmt.Fprintln(os.Stderr,bindings)
 	if err != nil {
