@@ -87,29 +87,27 @@ func main() {
 	//user: hippo
 	// TODO: replace with the connection string
 	var err error
+	fmt.Fprintln(os.Stderr, "Starting of main")
 	sb, err := binding.NewServiceBinding()
 	if err != nil {
 		_, _ = fmt.Fprintln(os.Stderr, "Could not read service bindings")
-		os.Exit(1)
 	}
 	bindings, err := sb.Bindings("postgresql")
 	connectionString := bindings[0]["pgbouncer-uri"]
 	fmt.Println(connectionString)
+	fmt.Fprintln(os.Stderr,connectionString)
 	if err != nil {
 		_, _ = fmt.Fprintln(os.Stderr, "Unable to find postgres binding")
-		os.Exit(1)
 	}
 	db, err = sql.Open("pgx", connectionString)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
-		os.Exit(1)
 	}
 	defer db.Close()
 	var greeting string
 	err = db.QueryRow("select 1").Scan(&greeting)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
-		os.Exit(1)
 	}
 
 	fmt.Println(greeting)
