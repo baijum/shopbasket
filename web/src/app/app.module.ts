@@ -7,6 +7,7 @@ import { InventoryComponent } from './inventory/inventory.component';
 import { HttpClientModule } from '@angular/common/http';
 import { InventoryFormComponent } from './inventory-form/inventory-form.component';
 import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { FormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,9 +1,43 @@
-<p>inventory works!</p>
-<h2>Inventory List</h2>
-<ul class="inventory">
+<!-- <h2 align="center">Inventory List</h2>
+<ul style="list-style-type:none;" class="inventory" align="center">
     <li *ngFor="let inv of inventory">
     <span class="badge">{{inv.id}}</span> {{inv.name}}:{{inv.description}}:{{inv.status}}:{{inv.price}}
     </li>
-</ul>
+</ul> -->
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
 
-<app-inventory-form></app-inventory-form>
+th, td {
+  text-align: left;
+  padding: 16px;
+}
+
+tr:nth-child(even) {
+  background-color:#2C747C;
+}
+</style>
+</head>
+<body>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Price</th>
+        <tr *ngFor="let inv of inventory">
+            <td>{{inv.id}}</td>
+            <td>{{inv.name}}</td>
+            <td>{{inv.description}}</td>
+            <td>{{inv.status}}</td>
+            <td>{{inv.price}}</td>
+        </tr>
+  </table>
+</body>
+
