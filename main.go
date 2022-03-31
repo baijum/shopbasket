@@ -13,10 +13,13 @@ import (
 	"github.com/urfave/negroni"
 	//"time"
 	"io/ioutil"
+	"io/fs"
+	"embed"
 )
 
 var db *sql.DB
-
+//go:embed web/dist/shopbasket
+var webStaticContent embed.FS
 func HandleGetInventory(w http.ResponseWriter, r *http.Request) {
 	datastore := Datastore{db}
 	vars := mux.Vars(r)
@@ -148,7 +151,8 @@ func main() {
 	router.HandleFunc("/api/inventory", HandleCreateInventory).Methods("POST")
 	router.HandleFunc("/api/inventory", HandleListInventory).Methods("GET")
 	router.HandleFunc("/api/inventory/{id}", HandleDeleteInventory).Methods("DELETE")
-	n := negroni.Classic()
+	webStaticContentRoot, _ := fs.Sub(webStaticContent, "web/dist/shopbasket")
+	n := negroni.New(negroni.NewRecovery(), negroni.NewLogger(), negroni.NewStatic(http.FS(webStaticContentRoot)))
 	n.UseHandler(router)
 	n.Run(":8080")
 
