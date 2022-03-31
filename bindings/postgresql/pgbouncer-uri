@@ -1,1 +1,1 @@
-postgresql://hippo:X7k_gN.ujQFIIrPNp%3CHiiMXW@localhost:5432/hippo
+postgresql://postgres:secret123@localhost:5432/postgres

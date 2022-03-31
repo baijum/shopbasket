@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+         go-version: "^1.17"
+    - uses: actions/checkout@v3
+    - name: start minikube
+      id: minikube
+      uses: medyagh/setup-minikube@master
+    - name: Integration Test
+      run: |
+        ./hack/initializeTestCluster.sh
+        export SERVICE_BINDING_ROOT=`pwd`/bindings
+        go test -v -coverpkg=./... -coverprofile=profile.cov ./...
+        go tool cover -func profile.cov

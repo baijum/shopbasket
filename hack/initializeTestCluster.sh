@@ -1,13 +1,11 @@
-
-minikube addons enable olm
-sleep 30
-kubectl apply -f https://operatorhub.io/install/postgresql.yaml
-sleep 30
+#!/usr/bin/bash
 kubectl create ns testing || true
-sleep 10
-kubectl apply -f https://redhat-developer.github.io/service-binding-operator/userguide/getting-started/_attachments/pgcluster-deployment.yaml -n testing
+kubectl apply -f hack/postgres-deployment.yaml -n testing
+kubectl apply -f hack/postgres-svc.yaml -n testing
 sleep 30
-kubectl port-forward svc/hippo-pgbouncer 5432:5432 -n testing 
-echo `kubectl get secret hippo-pguser-hippo --template='{{index .data "pgbouncer-uri" }}' -n testing | base64 -d |cut -d "@" -f 1`"@localhost:5432/hippo" > bindings/postgresql/pgbouncer-uri
+kubectl rollout status deployment postgres-deployment -n testing
+kubectl port-forward svc/postgres-svc 5432:5432 -n testing &
+sleep 10
 psql $(cat bindings/postgresql/pgbouncer-uri) -f db/schema.sql
- 
+npm install -g @angular/cli
+cd web && npm install && ng build && cd ..
