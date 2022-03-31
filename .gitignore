@@ -6,6 +6,7 @@
 *.dylib
 shopbasket
 .DS_Store
+*.cov
 
 # Test binary, built with `go test -c`
 *.test
