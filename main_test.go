@@ -28,10 +28,6 @@ func TestIntegration(t *testing.T) {
 	dbtest, err := InitializeDB()
 	fmt.Println(err)
 	datastore := Datastore{dbtest}
-	list, err := datastore.ListInventory()
-	fmt.Println(list)
-	assert.NotNil(t, list)
-	assert.Nil(t, err)
 	fmt.Println(err)
 	inv := &Inventory{
 		Name:        "Cars",
@@ -42,6 +38,10 @@ func TestIntegration(t *testing.T) {
 	resultInventory, err := datastore.CreateInventory(*inv)
 	assert.Nil(t, err)
 	_, err = datastore.GetInventory(resultInventory.Id)
+	assert.Nil(t, err)
+	list, err := datastore.ListInventory()
+	fmt.Println(list)
+	assert.NotNil(t, list)
 	assert.Nil(t, err)
 	err = datastore.DeleteInventory(resultInventory.Id)
 	assert.Nil(t, err)
